@@ -1,18 +1,23 @@
 {
   "files": {
-    "main.css": "/static/css/main.e03d52cc.css",
-    "main.js": "/static/js/main.433b7abb.js",
+    "main.css": "/static/css/main.c2b45847.css",
+    "main.js": "/static/js/main.e87cc898.js",
     "static/js/453.ed3810f9.chunk.js": "/static/js/453.ed3810f9.chunk.js",
-    "static/media/profile_2025.png": "/static/media/profile_2025.4f1a2a2a6aaebf5f94ed.png",
-    "static/media/footer.png": "/static/media/footer.0dc568cbb736f53f7eb5.png",
-    "static/media/header.png": "/static/media/header.cd2367031ea88c73ec40.png",
+    "static/media/portrait.jpg": "/static/media/portrait.ed1920fa4d2b11ef8b80.jpg",
+    "static/media/photo-tree.jpg": "/static/media/photo-tree.6722122adc5613f7bceb.jpg",
+    "static/media/photo-pines.jpg": "/static/media/photo-pines.2e06789c8d48fc0014a7.jpg",
+    "static/media/photo-ridge.jpg": "/static/media/photo-ridge.e0499b3d272bff1a39ca.jpg",
+    "static/media/book-playground.png": "/static/media/book-playground.e5822165b43ccbb6a85f.png",
+    "static/media/book-mannatural.png": "/static/media/book-mannatural.7e1c24e5a8bbf6019540.png",
+    "static/media/book-pollution.png": "/static/media/book-pollution.bda36be89a8e47fbea02.png",
+    "static/media/book-whatif.png": "/static/media/book-whatif.2af8876ff694cc4d9cae.png",
     "index.html": "/index.html",
-    "main.e03d52cc.css.map": "/static/css/main.e03d52cc.css.map",
-    "main.433b7abb.js.map": "/static/js/main.433b7abb.js.map",
+    "main.c2b45847.css.map": "/static/css/main.c2b45847.css.map",
+    "main.e87cc898.js.map": "/static/js/main.e87cc898.js.map",
     "453.ed3810f9.chunk.js.map": "/static/js/453.ed3810f9.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.e03d52cc.css",
-    "static/js/main.433b7abb.js"
+    "static/css/main.c2b45847.css",
+    "static/js/main.e87cc898.js"
   ]
 }
