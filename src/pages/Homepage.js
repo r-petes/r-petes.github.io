@@ -1,22 +1,56 @@
-import React, { useEffect, useState } from "react";
-import headerImage from "../assets/header.png";
-import footerImage from "../assets/footer.png";
-import portraitPhoto from "../assets/profile_2025.png";
+import React from "react";
+import portraitPhoto from "../assets/portrait.jpg";
+import photoRidge from "../assets/photo-ridge.jpg";
+import photoTree from "../assets/photo-tree.jpg";
+import photoPines from "../assets/photo-pines.jpg";
+import bookManNatural from "../assets/book-mannatural.png";
+import bookWhatIf from "../assets/book-whatif.png";
+import bookPollution from "../assets/book-pollution.png";
+import bookPlayground from "../assets/book-playground.png";
 
 const colors = {
-  bg: "oklch(98% 0.006 90)",
-  panel: "oklch(95% 0.008 90)",
-  ink: "oklch(17% 0.012 90)",
-  inkSoft: "oklch(38% 0.012 90)",
-  inkFaint: "oklch(55% 0.01 90)",
-  hairline: "oklch(87% 0.008 90)",
-  accent: "#919DD3",
-  accentDark: "oklch(38% 0.09 275)",
-  accentLight: "oklch(80% 0.06 275)",
-  accentSoft: "oklch(90% 0.04 275)",
+  paper: "#f4f2ef",
+  panel: "#eeebe4",
+  ink: "#16150f",
+  inkSoft: "#2f2b23",
+  inkMid: "#5d574a",
+  inkFaint: "#8a8272",
+  accent: "#a8926f",
+  accentSoft: "#b6a181",
+  accentDeep: "#8a7350",
+  hairline: "#e2ded6",
+  hairlinePanel: "#dcd7cc",
 };
 
+const serif = "Newsreader, Georgia, serif";
+const sans = "Karla, system-ui, sans-serif";
+
 const cvHref = `${process.env.PUBLIC_URL}/Peterson_CV_July2026.pdf`;
+
+const globalCss = `
+  @import url('https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,400&family=Karla:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap');
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: ${colors.paper}; -webkit-font-smoothing: antialiased; }
+  a { color: ${colors.ink}; text-decoration-color: ${colors.accentSoft}; text-underline-offset: 3px; }
+  a:hover { color: ${colors.accentDeep}; }
+  ::selection { background: #e6dcc9; }
+  .rp-nav a { text-decoration: none; padding-bottom: 2px; border-bottom: 1px solid transparent; }
+  .rp-nav a:hover { border-bottom: 1px solid ${colors.accentSoft}; }
+  .rp-nav a.rp-cv { border-bottom: 1px solid ${colors.accentSoft}; }
+  @media (max-width: 880px) {
+    .rp-nav { flex-wrap: wrap; row-gap: 10px; }
+    .rp-split { grid-template-columns: minmax(0, 1fr) !important; }
+    .rp-hero { flex-direction: column-reverse; gap: 24px !important; }
+    .rp-hero-side { align-items: flex-start !important; }
+    .rp-books { order: 2; }
+    .rp-thumbs { flex-direction: row !important; }
+    .rp-role { grid-template-columns: minmax(0, 1fr) !important; gap: 12px !important; }
+  }
+  @media (max-width: 560px) {
+    .rp-portrait { width: 66vw !important; }
+    .rp-role li, .rp-body { font-size: 16px !important; }
+  }
+`;
 
 const roles = [
   {
@@ -58,582 +92,513 @@ const roles = [
     title: "Teaching Assistant",
     org: "Oregon State University",
     bullets: [
-      "Hosted weekly office hours, graded coursework, and regularly monitored discussion forums for Discrete Structures in Computer Science course.",
+      "Hosted weekly office hours, graded coursework, and regularly monitored discussion forums for the Discrete Structures in Computer Science course.",
     ],
   },
 ];
 
-const researchInterests = [
-  {
-    title: "Understanding, trust, action",
-    desc: "How information systems promote or destabilize environmental understanding, trust, and action",
-  },
-  {
-    title: "Ethics in architecture",
-    desc: "How architectural decisions encode ethical assumptions at scale",
-  },
-  {
-    title: "Equitable public data",
-    desc: "Keeping publicly-accessible environmental datasets and tools trustworthy and usable",
-  },
+const questions = [
+  "How cultural notions of intelligence and value — humans vs. nature — propagate into tech",
+  "Information systems that abstract away material and ecological realities",
+  "Public environmental data — who it serves, and who it leaves behind",
+  "Where and how hope thrives in climate activism online",
 ];
 
+const books = [
+  { src: bookManNatural, alt: "Man and the Natural World by Keith Thomas", rotate: -9, shift: 0 },
+  { src: bookWhatIf, alt: "What If We Get It Right? by Ayana Elizabeth Johnson", rotate: 4, shift: -14 },
+  { src: bookPollution, alt: "Pollution Is Colonialism by Max Liboiron", rotate: -3, shift: 10 },
+  { src: bookPlayground, alt: "Playground by Richard Powers", rotate: 10, shift: 0 },
+];
+
+const thumbs = [
+  { src: photoRidge, alt: "Granite ridge on black and white film" },
+  { src: photoTree, alt: "A lone tree in fog" },
+  { src: photoPines, alt: "Pines against a snowfield" },
+];
+
+const eyebrow = {
+  fontSize: 14,
+  letterSpacing: "0.14em",
+  textTransform: "uppercase",
+  color: colors.inkFaint,
+};
+
+const sectionTitle = {
+  fontFamily: serif,
+  fontWeight: 400,
+  fontSize: "clamp(38px, 5vw, 66px)",
+  letterSpacing: "-0.01em",
+  margin: 0,
+};
+
+const bodyText = { fontSize: 19, color: colors.inkSoft, textWrap: "pretty" };
+
 function Homepage() {
-  const [scrolled, setScrolled] = useState(false);
-
-  useEffect(() => {
-    const onScroll = () => {
-      const y = window.scrollY;
-      setScrolled((prev) => {
-        if (!prev && y > 100) return true;
-        if (prev && y < 20) return false;
-        return prev;
-      });
-    };
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
-  const scrollToTop = (e) => {
-    e.preventDefault();
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
-
-  const headerStyle = {
-    position: "sticky",
-    top: 0,
-    zIndex: 10,
-    display: "flex",
-    alignItems: scrolled ? "center" : "flex-start",
-    justifyContent: "center",
-    height: scrolled ? "72px" : "160px",
-    padding: `${scrolled ? "0" : "28px"} 32px 0`,
-    overflow: "hidden",
-    transition: "height 0.4s ease, padding 0.4s ease",
-  };
-
-  const arrowStyle = {
-    position: "absolute",
-    right: 32,
-    top: "50%",
-    transform: "translateY(-50%)",
-    fontSize: 16,
-    color: colors.accent,
-    opacity: scrolled ? 1 : 0,
-    pointerEvents: scrolled ? "auto" : "none",
-    transition: "opacity 0.25s",
-  };
-
   return (
     <div
       id="top"
       style={{
-        fontFamily: "'Inter', sans-serif",
+        fontFamily: sans,
         color: colors.ink,
-        background: colors.bg,
+        background: colors.paper,
         lineHeight: 1.6,
+        overflowX: "clip",
       }}
     >
-      <header style={headerStyle}>
-        <div
-          style={{
-            position: "absolute",
-            inset: 0,
-            backgroundImage: `url(${headerImage})`,
-            backgroundSize: "cover",
-            backgroundPosition: "center top",
-            filter: "grayscale(0.4) contrast(1.02)",
-          }}
-        ></div>
-        <div
-          style={{
-            position: "absolute",
-            inset: 0,
-            background: "rgba(255,255,255,0.3)",
-          }}
-        ></div>
-        <nav
-          style={{
-            position: "relative",
-            display: "flex",
-            alignItems: "center",
-            gap: 36,
-            fontSize: 13,
-            fontWeight: 600,
-            letterSpacing: "0.08em",
-            textTransform: "uppercase",
-          }}
-        >
-          <a href="#about" style={{ color: colors.inkSoft }}>
-            about
-          </a>
-          <a href="#work" style={{ color: colors.inkSoft }}>
-            experience
-          </a>
-          <a href="#contact" style={{ color: colors.inkSoft }}>
-            contact
-          </a>
-          <a href={cvHref} download style={{ color: colors.inkSoft }}>
-            cv
-          </a>
-        </nav>
-        <a href="#top" onClick={scrollToTop} style={arrowStyle}>
-          &uarr;
-        </a>
-      </header>
+      <style>{globalCss}</style>
 
-      <div
+      <nav
+        className="rp-nav"
         style={{
-          position: "relative",
+          position: "sticky",
+          top: 0,
+          zIndex: 20,
           display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          textAlign: "center",
-          gap: 28,
-          padding: "56px 32px 0",
+          alignItems: "baseline",
+          gap: 26,
+          padding: "16px 6vw",
+          background: "rgba(244,242,239,0.92)",
+          backdropFilter: "blur(8px)",
+          borderBottom: `1px solid ${colors.hairline}`,
+          fontSize: 15,
         }}
       >
-        <div>
-          <h1
-            style={{
-              fontFamily: "'Source Serif 4', serif",
-              fontWeight: 600,
-              fontSize: 64,
-              lineHeight: 1.05,
-              margin: 0,
-              letterSpacing: "0.01em",
-              textTransform: "uppercase",
-              color: colors.ink,
-            }}
-          >
-            <span style={{ color: colors.accentDark }}>Rachel Peterson</span>
-          </h1>
-          <p
-            style={{
-              fontSize: 13,
-              fontWeight: 600,
-              letterSpacing: "0.1em",
-              textTransform: "uppercase",
-              color: colors.inkFaint,
-              margin: "18px 0 0",
-            }}
-          >
-            research software engineer &amp; Information Science master's
-            student
-          </p>
-        </div>
-        <div
-          style={{
-            width: 200,
-            height: 200,
-            borderRadius: "50%",
-            overflow: "hidden",
-            boxShadow: "0 10px 28px -8px rgba(0,0,0,0.25)",
-          }}
-        >
-          <img
-            src={portraitPhoto}
-            alt="Rachel Peterson"
-            style={{ width: "100%", height: "100%", objectFit: "cover" }}
-          />
-        </div>
-      </div>
+        <a href="#top" style={{ fontFamily: serif, fontSize: 19, marginRight: "auto" }}>
+          Rachel Peterson
+        </a>
+        <a href="#about">about</a>
+        <a href="#research">research</a>
+        <a href="#work">experience</a>
+        <a href="#contact">contact</a>
+        <a href={cvHref} download className="rp-cv">
+          cv
+        </a>
+      </nav>
 
-      <section
-        id="about"
-        style={{
-          maxWidth: 820,
-          margin: "0 auto",
-          padding: "64px 32px 96px",
-          textAlign: "center",
-        }}
-      >
-        <div
-          style={{
-            fontSize: 13,
-            fontWeight: 600,
-            letterSpacing: "0.1em",
-            textTransform: "uppercase",
-            color: colors.accent,
-            marginBottom: 22,
-          }}
-        >
-          About
-        </div>
-        <p style={{ fontSize: 17, color: colors.inkSoft, margin: "0 0 20px" }}>
-          I'm a software engineer with several years of experience working at
-          the intersection of technology and people. My work focuses on
-          building robust systems that support research and long-term public
-          value, particularly in environmental and scientific contexts.
-        </p>
-        <p style={{ fontSize: 17, color: colors.inkSoft, margin: "0 0 20px" }}>
-          At the Cooperative Institute for Research in Environmental Sciences
-          (CIRES), a NOAA partnership, I help modernize and migrate
-          national-scale geophysical data archives — designing cloud-native
-          pipelines, improving system reliability, and collaborating closely
-          with researchers to keep data accessible, trustworthy, and usable.
-        </p>
-        <p style={{ fontSize: 17, color: colors.inkSoft, margin: 0 }}>
-          I thrive in the in-between spaces: bridging gaps, translating
-          stakeholder needs into meaningful output, and navigating alignment
-          between mission and goals. I try to bring a curious,
-          sustainably-minded, and thoughtful spirit to all of it.
-        </p>
-      </section>
+      <section style={{ padding: "7vh 6vw 0" }}>
+        <div style={{ display: "flex", gap: "6vw", alignItems: "flex-start" }} className="rp-hero">
+          <div style={{ flex: "1 1 auto", minWidth: 0 }}>
+            <h1
+              style={{
+                fontFamily: serif,
+                fontWeight: 400,
+                fontSize: "clamp(60px, 10.5vw, 164px)",
+                lineHeight: 0.86,
+                letterSpacing: "-0.02em",
+                margin: "4px 0 0",
+              }}
+            >
+              Rachel
+            </h1>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "baseline",
+                flexWrap: "wrap",
+                gap: 14,
+                margin: "-14px 0 0 8px",
+              }}
+            >
+              <span style={{ fontFamily: serif, fontSize: 26, color: "#3a3529" }}>(she/her)</span>
+              <span style={{ width: 46, height: 1, background: "#c3b394" }}></span>
+              <span style={{ fontSize: 14, color: "#6b6455", letterSpacing: "0.04em" }}>
+                Boulder, Colorado
+              </span>
+            </div>
 
-      <section style={{ position: "relative", overflow: "hidden" }}>
-        <div
-          style={{
-            position: "absolute",
-            inset: 0,
-            filter: "grayscale(0.5) contrast(1.02)",
-          }}
-        >
-          <img
-            src={footerImage}
-            alt=""
-            style={{ width: "100%", height: "100%", objectFit: "cover" }}
-          />
-        </div>
-        <div
-          style={{
-            position: "absolute",
-            inset: 0,
-            background: colors.bg,
-            opacity: 0.78,
-          }}
-        ></div>
-        <section
-          id="research"
-          style={{
-            position: "relative",
-            maxWidth: 900,
-            margin: "0 auto",
-            padding: "96px 32px",
-            textAlign: "center",
-          }}
-        >
-          <div
-            style={{
-              fontSize: 13,
-              fontWeight: 600,
-              letterSpacing: "0.1em",
-              textTransform: "uppercase",
-              color: colors.accent,
-              marginBottom: 22,
-            }}
-          >
-            Research Interests
-          </div>
-          <p
-            style={{
-              fontSize: 17,
-              color: colors.inkSoft,
-              maxWidth: 640,
-              margin: "0 auto 28px",
-            }}
-          >
-            Alongside my engineering work, I am currently a master's student
-            in the Information Science department at the University of
-            Colorado Boulder, deepening my thinking on the questions that
-            matter most to me.
-          </p>
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              gap: 40,
-              flexWrap: "wrap",
-              borderTop: `1px solid ${colors.hairline}`,
-              paddingTop: 32,
-              textAlign: "left",
-              maxWidth: 760,
-              margin: "0 auto",
-            }}
-          >
-            {researchInterests.map((item) => (
-              <div key={item.title} style={{ maxWidth: 220 }}>
-                <div
-                  style={{
-                    fontWeight: 600,
-                    fontSize: 15,
-                    marginBottom: 6,
-                  }}
-                >
-                  {item.title}
-                </div>
-                <div style={{ fontSize: 14, color: colors.inkFaint }}>
-                  {item.desc}
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
-      </section>
-
-      <section style={{ background: colors.panel }}>
-        <div
-          id="work"
-          style={{ maxWidth: 900, margin: "0 auto", padding: "96px 32px" }}
-        >
-          <h2
-            style={{
-              fontFamily: "'Source Serif 4', serif",
-              fontWeight: 600,
-              fontSize: 28,
-              margin: "0 0 44px",
-              textAlign: "center",
-              textTransform: "uppercase",
-              letterSpacing: "0.04em",
-            }}
-          >
-            Experience
-          </h2>
-          <div style={{ display: "flex", flexDirection: "column" }}>
-            {roles.map((role) => (
-              <div
-                key={role.title + role.dates}
+            <div
+              style={{
+                display: "flex",
+                alignItems: "flex-start",
+                gap: 14,
+                marginTop: 14,
+              }}
+            >
+              <svg
+                width="92"
+                height="112"
+                viewBox="0 0 92 112"
+                fill="none"
+                style={{ flex: "0 0 auto", marginLeft: 12 }}
+                aria-hidden="true"
+              >
+                <path
+                  d="M6 4 C10 44, 18 76, 46 82"
+                  stroke={colors.accentSoft}
+                  strokeWidth="2.2"
+                  strokeLinecap="round"
+                  strokeDasharray="5 6"
+                  fill="none"
+                />
+                <path d="M45 75 L61 82 L45 89 Z" fill={colors.accent} />
+              </svg>
+              <p
                 style={{
-                  display: "grid",
-                  gridTemplateColumns: "150px 1fr",
-                  gap: 28,
-                  padding: "26px 0",
-                  borderTop: `1px solid ${colors.hairline}`,
+                  fontFamily: serif,
+                  fontSize: "clamp(20px, 2vw, 26px)",
+                  lineHeight: 1.45,
+                  color: "#2a2620",
+                  margin: "62px 0 0",
+                  textWrap: "pretty",
                 }}
               >
-                <div
-                  style={{
-                    fontSize: 14,
-                    color: colors.inkFaint,
-                    paddingTop: 2,
-                  }}
-                >
-                  {role.dates}
-                </div>
-                <div>
-                  <div
-                    style={{
-                      fontSize: 17,
-                      fontWeight: 600,
-                      marginBottom: 2,
-                    }}
-                  >
-                    {role.title}
-                  </div>
-                  <div
-                    style={{
-                      fontSize: 14,
-                      color: colors.accent,
-                      marginBottom: 12,
-                    }}
-                  >
-                    {role.org}
-                  </div>
-                  {role.progression && (
-                    <div
-                      style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        gap: 4,
-                        marginBottom: 12,
-                      }}
-                    >
-                      {role.progression.map((step) => (
-                        <div
-                          key={step.title}
-                          style={{ fontSize: 14, color: colors.ink }}
-                        >
-                          <span style={{ fontWeight: 600 }}>
-                            {step.title}
-                          </span>{" "}
-                          <span style={{ color: colors.inkFaint }}>
-                            — {step.dates}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                  <ul
-                    style={{
-                      margin: 0,
-                      paddingLeft: 18,
-                      display: "flex",
-                      flexDirection: "column",
-                      gap: 6,
-                    }}
-                  >
-                    {role.bullets.map((bullet, i) => (
-                      <li
-                        key={i}
-                        style={{ fontSize: 15, color: colors.inkSoft }}
-                      >
-                        {bullet}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-            ))}
+                Software engineer building seafloor data infrastructure. Master's student in Information Science studying sociotechnical systems.
+
+              </p>
+            </div>
           </div>
-          <p
-            style={{
-              fontSize: 14,
-              color: colors.inkFaint,
-              textAlign: "center",
-              margin: "40px 0 0",
-              paddingTop: 32,
-              borderTop: `1px solid ${colors.hairline}`,
-            }}
+
+          <div
+            className="rp-hero-side"
+            style={{ flex: "0 0 auto", display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 24 }}
           >
-            B.S., Computer Science, Oregon State University &nbsp;&middot;&nbsp;
-            B.A., Spanish, University of Missouri
-          </p>
+            <div
+              className="rp-portrait"
+              style={{
+                width: "min(30vw, 330px)",
+                aspectRatio: 1,
+                borderRadius: "50%",
+                overflow: "hidden",
+              }}
+            >
+              <img
+                src={portraitPhoto}
+                alt="Rachel Peterson on a gravel road at dusk"
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "cover",
+                  objectPosition: "46% 40%",
+                  transform: "scale(1.7) translateY(-15%)",
+                  transformOrigin: "50% 50%",
+                }}
+              />
+            </div>
+          </div>
         </div>
       </section>
 
-      <section style={{ maxWidth: 900, margin: "0 auto", padding: "96px 32px" }}>
-        <h2
+      <section id="about" style={{ padding: "12vh 6vw 8vh" }}>
+        <div style={{ maxWidth: "34em", margin: "0 auto" }}>
+          <div style={{ ...eyebrow, marginBottom: 22 }}>About</div>
+          <div className="rp-body">
+            <p style={{ ...bodyText, margin: "0 0 22px" }}>
+              I’m a software engineer working at the intersection of
+              technology and people. My work focuses on building systems that support research
+              and long-term public value, particularly in environmental / scientific contexts.
+            </p>
+            <p style={{ ...bodyText, margin: "0 0 22px" }}>
+              At the Cooperative Institute for Research in Environmental Sciences (CIRES), a NOAA
+              partnership, I help modernize and migrate national-scale geophysical data archives —
+              designing cloud-native pipelines, improving system reliability, and collaborating
+              closely with researchers to keep data accessible, trustworthy, and usable.
+            </p>
+            <p style={{ ...bodyText, margin: 0 }}>
+              I love the in-between spaces, and I'm always seeking opportunities for translation, collaboration, and community-building.
+              I strive to bring a curious, sustainably-minded, and thoughtful spirit to all of it.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section
+        id="research"
+        style={{ padding: "4vh 6vw 10vh", borderTop: `1px solid ${colors.hairline}` }}
+      >
+        <div
           style={{
-            fontFamily: "'Source Serif 4', serif",
-            fontWeight: 600,
-            fontSize: 28,
-            margin: "0 0 20px",
-            textAlign: "center",
-            textTransform: "uppercase",
-            letterSpacing: "0.04em",
+            display: "flex",
+            alignItems: "baseline",
+            flexWrap: "wrap",
+            gap: 20,
+            marginBottom: 30,
+            paddingTop: "6vh",
           }}
         >
-          Community &amp; Civic Leadership
-        </h2>
-        <p
-          style={{
-            fontSize: 16,
-            color: colors.inkSoft,
-            textAlign: "center",
-            maxWidth: 600,
-            margin: "0 auto",
-          }}
-        >
-          I bring the same care for people and systems to my community work
-          &mdash;{" "}
-          <a
-            href="https://uuchurchofboulder.org/board/"
-            target="_blank"
-            rel="noreferrer"
-            style={{ color: colors.accent, fontWeight: 600 }}
-          >
-            governance
-          </a>
-          ,{" "}
-          <a
-            href="https://www.youtube.com/live/7nBSbRdfMlQ?si=WAj2ryKPhCh30_kl&t=2223"
-            target="_blank"
-            rel="noreferrer"
-            style={{ color: colors.accent, fontWeight: 600 }}
-          >
-            public speaking
-          </a>
-          , and campaigns that build durable civic infrastructure.
+          <h2 style={sectionTitle}>research interests</h2>
+        </div>
+        <p className="rp-body" style={{ ...bodyText, maxWidth: "34em", margin: "0 0 4vh" }}>
+          Alongside my engineering work, I am currently a master’s student in the Information Science
+          department at the University of Colorado Boulder, deepening my thinking on the questions
+          that matter most to me.
         </p>
+        <div
+          style={{
+            borderTop: `1px solid ${colors.hairline}`,
+            borderBottom: `1px solid ${colors.hairline}`,
+            padding: "40px 0",
+          }}
+        >
+          <div
+            className="rp-split"
+            style={{
+              display: "grid",
+              gridTemplateColumns: "minmax(0, 1fr) auto",
+              gap: "5vw",
+              alignItems: "start",
+            }}
+          >
+            <div>
+          <div style={{ fontSize: 15, color: colors.inkFaint, marginBottom: 22 }}>
+            Questions I’m circling right now
+          </div>
+          <ul
+            style={{
+              listStyle: "none",
+              margin: 0,
+              padding: 0,
+              display: "flex",
+              flexDirection: "column",
+              gap: 16,
+            }}
+          >
+            {questions.map((q) => (
+              <li key={q} style={{ display: "flex", gap: 16, alignItems: "baseline" }}>
+                <span
+                  style={{
+                    flex: "0 0 auto",
+                    width: 5,
+                    height: 5,
+                    borderRadius: "50%",
+                    background: colors.accent,
+                  }}
+                ></span>
+                <span
+                  style={{
+                    fontFamily: serif,
+                    fontSize: "clamp(21px, 2.1vw, 29px)",
+                    lineHeight: 1.35,
+                    textWrap: "pretty",
+                  }}
+                >
+                  {q}
+                </span>
+              </li>
+            ))}
+          </ul>
+            </div>
+            <div className="rp-thumbs" style={{ display: "flex", gap: 12 }}>
+              {thumbs.map((t) => (
+                <img
+                  key={t.src}
+                  src={t.src}
+                  alt={t.alt}
+                  style={{ width: 96, height: 96, objectFit: "cover" }}
+                />
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section style={{ padding: "8vh 6vw 10vh" }}>
+        <div
+          className="rp-split"
+          style={{
+            display: "grid",
+            gridTemplateColumns: "minmax(0, 0.9fr) minmax(0, 1.1fr)",
+            gap: "6vw",
+            alignItems: "center",
+          }}
+        >
+          <div
+            className="rp-books"
+            style={{ display: "flex", justifyContent: "center", padding: "30px 0" }}
+          >
+            {books.map((b, i) => (
+              <img
+                key={b.src}
+                src={b.src}
+                alt={b.alt}
+                style={{
+                  width: "24%",
+                  boxShadow: "0 12px 30px rgba(22,21,15,0.18)",
+                  transform: `rotate(${b.rotate}deg) translateY(${b.shift}px)`,
+                  marginRight: i === books.length - 1 ? 0 : "-4%",
+                  zIndex: i + 1,
+                }}
+              />
+            ))}
+          </div>
+          <div>
+            <p
+              style={{
+                fontFamily: serif,
+                fontSize: "clamp(24px, 2.3vw, 33px)",
+                lineHeight: 1.4,
+                margin: "0 0 18px",
+                maxWidth: "21em",
+                textWrap: "pretty",
+              }}
+            >
+              I love to read, and so many of my interests evolve from something I’ve underlined in a
+              book.
+            </p>
+            <p
+              className="rp-body"
+              style={{ fontSize: 18, color: colors.inkMid, margin: 0, maxWidth: "32em", textWrap: "pretty" }}
+            >
+              Environmental history, hopeful climate futures, and fiction that takes the nonhuman
+              world seriously. Usually two or three going at once, plus whatever is stacked on the
+              nightstand for later. I’m always down to talk about books.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section id="work" style={{ padding: "8vh 6vw 10vh", background: colors.panel }}>
+        <h2 style={{ ...sectionTitle, marginBottom: "5vh" }}>experience</h2>
+
+        {roles.map((role, i) => (
+          <div
+            key={role.title + role.dates}
+            className="rp-role"
+            style={{
+              display: "grid",
+              gridTemplateColumns: "200px minmax(0, 1fr)",
+              gap: "20px 34px",
+              padding: "32px 0",
+              borderTop: `1px solid ${colors.hairlinePanel}`,
+              borderBottom:
+                i === roles.length - 1 ? `1px solid ${colors.hairlinePanel}` : undefined,
+            }}
+          >
+            <div style={{ fontFamily: serif, fontSize: 18, color: "#6b6455" }}>{role.dates}</div>
+            <div>
+              <div style={{ fontSize: 23, fontWeight: 500, lineHeight: 1.3 }}>{role.title}</div>
+              <div
+                style={{
+                  fontSize: 16,
+                  color: colors.accentDeep,
+                  margin: role.progression ? "4px 0 0" : "4px 0 16px",
+                }}
+              >
+                {role.org}
+              </div>
+              {role.progression && (
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: 4,
+                    margin: "16px 0",
+                    fontSize: 16,
+                  }}
+                >
+                  {role.progression.map((step) => (
+                    <div key={step.title}>
+                      <span style={{ fontWeight: 600 }}>{step.title}</span>{" "}
+                      <span style={{ color: "#6b6455" }}>— {step.dates}</span>
+                    </div>
+                  ))}
+                </div>
+              )}
+              <ul
+                style={{
+                  margin: 0,
+                  paddingLeft: 20,
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: 8,
+                  maxWidth: "44em",
+                }}
+              >
+                {role.bullets.map((bullet) => (
+                  <li key={bullet} style={{ fontSize: 17, color: "#3a352b", textWrap: "pretty" }}>
+                    {bullet}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        ))}
+
+        <div
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            gap: "10px 34px",
+            marginTop: 34,
+            fontFamily: serif,
+            fontSize: 19,
+            color: "#4a4438",
+          }}
+        >
+          <span>B.S., Computer Science, Oregon State University</span>
+          <span>B.A., Spanish, University of Missouri</span>
+        </div>
+      </section>
+
+      <section style={{ padding: "10vh 6vw" }}>
+        <div
+          className="rp-split"
+          style={{
+            display: "grid",
+            gridTemplateColumns: "minmax(0, 220px) minmax(0, 1fr)",
+            gap: "5vw",
+          }}
+        >
+          <div style={{ ...eyebrow, paddingTop: 12 }}>Community</div>
+          <p
+            style={{
+              fontFamily: serif,
+              fontSize: "clamp(22px, 2.2vw, 31px)",
+              lineHeight: 1.45,
+              margin: 0,
+              maxWidth: "26em",
+              textWrap: "pretty",
+            }}
+          >
+            I bring the same care for people and systems to my community work —{" "}
+            <a href="https://uuchurchofboulder.org/board/" target="_blank" rel="noreferrer">
+              governance
+            </a>
+            ,{" "}
+            <a
+              href="https://www.youtube.com/live/7nBSbRdfMlQ?si=WAj2ryKPhCh30_kl&t=2223"
+              target="_blank"
+              rel="noreferrer"
+            >
+              public speaking
+            </a>
+            , and campaigns that build durable civic infrastructure.
+          </p>
+        </div>
       </section>
 
       <footer
         id="contact"
         style={{
-          position: "relative",
-          padding: "120px 32px 90px",
-          textAlign: "center",
-          overflow: "hidden",
+          padding: "6vh 6vw 8vh",
+          borderTop: `1px solid ${colors.hairline}`,
+          display: "flex",
+          flexWrap: "wrap",
+          alignItems: "baseline",
+          gap: "18px 30px",
         }}
       >
-        <div
-          style={{
-            position: "absolute",
-            inset: 0,
-            filter: "grayscale(0.3) contrast(1.05) brightness(0.9)",
-          }}
+        <span style={{ fontFamily: serif, fontSize: 32, marginRight: 10 }}>say hello</span>
+        <a href="mailto:rachel.peterson.5683@gmail.com" style={{ fontSize: 17 }}>
+          email
+        </a>
+        <a
+          href="https://www.linkedin.com/in/r-petes"
+          target="_blank"
+          rel="noreferrer"
+          style={{ fontSize: 17 }}
         >
-          <img
-            src={footerImage}
-            alt=""
-            style={{ width: "100%", height: "100%", objectFit: "cover" }}
-          />
-        </div>
-        <div
-          style={{
-            position: "absolute",
-            inset: 0,
-            background: "rgba(20,22,18,0.55)",
-          }}
-        ></div>
-        <div style={{ position: "relative", color: "#f6f4ee" }}>
-          <div
-            style={{
-              fontSize: 13,
-              fontWeight: 600,
-              letterSpacing: "0.12em",
-              textTransform: "uppercase",
-              marginBottom: 24,
-              color: colors.accentLight,
-            }}
-          >
-            Contact me
-          </div>
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              gap: 36,
-              flexWrap: "wrap",
-              fontSize: 14,
-              fontWeight: 600,
-              letterSpacing: "0.06em",
-              textTransform: "uppercase",
-            }}
-          >
-            <a
-              href="mailto:rachel.peterson.5683@gmail.com"
-              style={{
-                color: "#f6f4ee",
-                borderBottom: `1px solid ${colors.accentLight}`,
-              }}
-            >
-              Email
-            </a>
-            <a
-              href="https://www.linkedin.com/in/r-petes"
-              target="_blank"
-              rel="noreferrer"
-              style={{
-                color: "#f6f4ee",
-                borderBottom: `1px solid ${colors.accentLight}`,
-              }}
-            >
-              LinkedIn
-            </a>
-            <a
-              href="https://github.com/r-petes"
-              target="_blank"
-              rel="noreferrer"
-              style={{
-                color: "#f6f4ee",
-                borderBottom: `1px solid ${colors.accentLight}`,
-              }}
-            >
-              GitHub
-            </a>
-            <a
-              href={cvHref}
-              download
-              style={{
-                color: "#f6f4ee",
-                borderBottom: `1px solid ${colors.accentLight}`,
-              }}
-            >
-              CV
-            </a>
-          </div>
-        </div>
+          linkedin
+        </a>
+        <a href="https://github.com/r-petes" target="_blank" rel="noreferrer" style={{ fontSize: 17 }}>
+          github
+        </a>
+        <a href={cvHref} download style={{ fontSize: 17 }}>
+          cv
+        </a>
+        <span style={{ marginLeft: "auto", fontSize: 13, color: colors.inkFaint }}>
+          Boulder, CO · she/her
+        </span>
       </footer>
     </div>
   );
