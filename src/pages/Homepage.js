@@ -3,10 +3,10 @@ import portraitPhoto from "../assets/portrait.jpg";
 import photoRidge from "../assets/photo-ridge.jpg";
 import photoTree from "../assets/photo-tree.jpg";
 import photoPines from "../assets/photo-pines.jpg";
-import bookManNatural from "../assets/book-mannatural.png";
-import bookWhatIf from "../assets/book-whatif.png";
-import bookPollution from "../assets/book-pollution.png";
-import bookPlayground from "../assets/book-playground.png";
+import bookManNatural from "../assets/book-mannatural.jpg";
+import bookWhatIf from "../assets/book-whatif.jpg";
+import bookPollution from "../assets/book-pollution.jpg";
+import bookPlayground from "../assets/book-playground.jpg";
 
 const colors = {
   paper: "#f4f2ef",
@@ -164,10 +164,7 @@ function Homepage() {
           fontSize: 15,
         }}
       >
-        <a href="#top" style={{ fontFamily: serif, fontSize: 19, marginRight: "auto" }}>
-          Rachel Peterson
-        </a>
-        <a href="#about">about</a>
+        <a href="#top">about</a>
         <a href="#research">research</a>
         <a href="#work">experience</a>
         <a href="#contact">contact</a>
@@ -183,13 +180,13 @@ function Homepage() {
               style={{
                 fontFamily: serif,
                 fontWeight: 400,
-                fontSize: "clamp(60px, 10.5vw, 164px)",
+                fontSize: "clamp(33px, 7vw, 100px)",
                 lineHeight: 0.86,
                 letterSpacing: "-0.02em",
                 margin: "4px 0 0",
               }}
             >
-              Rachel
+              Rachel Peterson
             </h1>
             <div
               style={{
@@ -341,7 +338,7 @@ function Homepage() {
           >
             <div>
           <div style={{ fontSize: 15, color: colors.inkFaint, marginBottom: 22 }}>
-            Questions I’m circling right now
+            Some things I'm thinking about!
           </div>
           <ul
             style={{
@@ -440,8 +437,7 @@ function Homepage() {
               style={{ fontSize: 18, color: colors.inkMid, margin: 0, maxWidth: "32em", textWrap: "pretty" }}
             >
               Environmental history, hopeful climate futures, and fiction that takes the nonhuman
-              world seriously. Usually two or three going at once, plus whatever is stacked on the
-              nightstand for later. I’m always down to talk about books.
+              world seriously. I’m always down to talk about books.
             </p>
           </div>
         </div>
@@ -562,7 +558,7 @@ function Homepage() {
             >
               public speaking
             </a>
-            , and campaigns that build durable civic infrastructure.
+            , events programming, teaching, and organizing that promotes a more equitable, hopeful world.
           </p>
         </div>
       </section>
