@@ -25,7 +25,7 @@ const colors = {
 const serif = "Newsreader, Georgia, serif";
 const sans = "Karla, system-ui, sans-serif";
 
-const cvHref = `${process.env.PUBLIC_URL}/Peterson_CV_July2026.pdf`;
+const cvHref = `${process.env.PUBLIC_URL}/Peterson_CV.pdf`;
 
 const globalCss = `
   @import url('https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,400&family=Karla:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap');
